@@ -140,7 +140,7 @@ l__________/__________|___|______l__________j_____j
     Sahli.zoomin = function() {
       if ($('pre').hasClass('plaintext')) {
         return Sahli.increaseFont($('pre'), 2);
-      } else {
+      } else {sahli
         return Sahli.zoom(100);
       }
     };

@@ -1,81 +1,86 @@
 <html>
-  <head>
+<head>
     <title>Sahli - ascii/ansi viewer</title>
     <script type='text/javascript' src='http://code.jquery.com/jquery-2.1.3.min.js'></script>
-<!--  you could use this if you are sure you will have internet. Not all parties have internet.
-    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
--->
+    <!--  you could use this if you are sure you will have internet. Not all parties have internet.
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    -->
     <script type="text/javascript" src="ansilove.js/ansilove.js"></script>
     <script type="text/javascript" src="sahli.js"></script>
     <script>
-    $(document).ready(function(){
-      sahli = new Sahli;
-      Sahli.requestsahlifile('list.sahli')
-    })
+        $(document).ready(function () {
+            Sahli.requestsahlifile('list.sahli')
+        })
     </script>
-    <link rel="stylesheet" href="sahli.css" type="text/css" media="screen" />
-    <meta charset='UTF-8' />
-  </head>
-  <body>
-  <div id="outbox">
-    <div id='sahliviewer'><hr>
-      <h1>Space to Start</h1>
-      <ul class='keylist'>
-        <h5>MOBILE/MOUSE</h5>
-        <li class='nodot'><span class="key">TOP</span> start scrolling / reverse scrolling</li>
-        <li class='nodot'><span class="key">BOTTOM</span> Next Picture </li>
-        <li class='nodot'><span class="key">LEFT</span> Fullscreen</li>
-        <li class='nodot'><span class="key">RIGHT</span> Panel Mode</li>
-      </ul>
+    <link rel="stylesheet" href="sahli.css" type="text/css" media="screen"/>
+    <meta charset='UTF-8'/>
+</head>
+<body>
+<div id="outbox">
+    <div id='sahliviewer'>
+        <hr>
+        <h1>Space to Start</h1>
+        <ul class='keylist'>
+            <h5>MOBILE/MOUSE</h5>
+            <li class='nodot'><span class="key">TOP</span> start scrolling / reverse scrolling</li>
+            <li class='nodot'><span class="key">BOTTOM</span> Next Picture</li>
+            <li class='nodot'><span class="key">LEFT</span> Fullscreen</li>
+            <li class='nodot'><span class="key">RIGHT</span> Panel Mode</li>
+        </ul>
     </div>
-  </div>
+</div>
 
-  <div align="center">
+<div align="center">
     <div class="help hidden">
-      <h1 class="help">Sahli Key Help</h1>
-      <ul class="keylist">
-        <li><span class="key">F</span> Fullscreen</li>
-        <li><span class="key">Space</span> Next Picture</li>
-        <li><span class="key">S</span> Start or Reverse scrolling</li>
-        <li><span class="key">X</span> Begin scrolling downward</li>
-        <li><span class="key">W</span> Begin scrolling upward</li>
-        <li><span class="key">A</span> Stop scrolling</li>
+        <h1 class="help">Sahli Key Help</h1>
+        <ul class="keylist">
+            <li><span class="key">F</span> Fullscreen</li>
+            <li><span class="key">Space</span> Next Picture</li>
+            <li><span class="key">S</span> Start or Reverse scrolling</li>
+            <li><span class="key">X</span> Begin scrolling downward</li>
+            <li><span class="key">W</span> Begin scrolling upward</li>
+            <li><span class="key">A</span> Stop scrolling</li>
 
-        <li><span class="key">P</span> Previous Picture</li>
+            <li><span class="key">P</span> Previous Picture</li>
 
-        <li><span class="key">T</span> Jump to Top of picture (resets zoom)</li>
-        <li><span class="key">B</span> Jump to Bottom</li>
-        <li><span class="key">1</span><span class="key">2</span><span class="key">3</span><span class="key">4</span><span class="key">5</span> Alter scrollspeed (fast -> slow)</li>
-        <li><span class="key">Z</span> Zoom full width</li>
-        <li><span class="key">E</span><span class="key">R</span> Zoom in steps larger/smaller</li>
-        <li><span class="key">C</span> "panel" view toggle</li>
-        <li><span class="key">Up</span><span class="key">Down</span><span class="key">Pageup</span><span class="key">Pagedown</span> Move about by line/page</li>
-        <li><span class="key">Home</span><span class="key">End</span> Move to top/bottom (no zoom reset)</li>
-        <li><span class="key">I</span> SAUCE or Partymeister info</li>
-        <li><span class="key">V</span> Center Small Ascii Vertically</li>
-        <li><span class="key">H</span> This help (:  <span class="key">Esc</span> Cancel fullscreen</li>
-        <h5>MOBILE/MOUSE</h5>
-        <li class='nodot'><span class="key">TOP</span> start scrolling / reverse scrolling</li>
-        <li class='nodot'><span class="key">BOTTOM</span> Next Picture </li>
-        <li class='nodot'><span class="key">LEFT</span> Fullscreen <span class="key">RIGHT</span> Panel Mode</li>
-      </ul>    </div>
-  </div>
+            <li><span class="key">T</span> Jump to Top of picture (resets zoom)</li>
+            <li><span class="key">B</span> Jump to Bottom</li>
+            <li><span class="key">1</span><span class="key">2</span><span class="key">3</span><span class="key">4</span><span
+                    class="key">5</span> Alter scrollspeed (fast -> slow)
+            </li>
+            <li><span class="key">Z</span> Zoom full width</li>
+            <li><span class="key">E</span><span class="key">R</span> Zoom in steps larger/smaller</li>
+            <li><span class="key">C</span> "panel" view toggle</li>
+            <li><span class="key">Up</span><span class="key">Down</span><span class="key">Pageup</span><span
+                    class="key">Pagedown</span> Move about by line/page
+            </li>
+            <li><span class="key">Home</span><span class="key">End</span> Move to top/bottom (no zoom reset)</li>
+            <li><span class="key">I</span> SAUCE or Partymeister info</li>
+            <li><span class="key">V</span> Center Small Ascii Vertically</li>
+            <li><span class="key">H</span> This help (: <span class="key">Esc</span> Cancel fullscreen</li>
+            <h5>MOBILE/MOUSE</h5>
+            <li class='nodot'><span class="key">TOP</span> start scrolling / reverse scrolling</li>
+            <li class='nodot'><span class="key">BOTTOM</span> Next Picture</li>
+            <li class='nodot'><span class="key">LEFT</span> Fullscreen <span class="key">RIGHT</span> Panel Mode</li>
+        </ul>
+    </div>
+</div>
 
-  <div class='hidden' id='panel'>
-  hi mom
-  </div>
+<div class='hidden' id='panel'>
+    hi mom
+</div>
 
-  <div class="infobox hidden">
+<div class="infobox hidden">
     <h1 class="infobox">TITLE</h1>
     <h2 class="infobox">author</h2>
     <h3 class="infobox" id='text'>TEXT1</h3>
     <h3 class="infobox" id='text2'>TEXT2</h3>
     <p class="infobox, bigtext">OH MY GOD BECKY LOOK AT HER BUTT IT IS SO BIG!</p>
     <p class="infobox"><span id='filename'>filename</span>
-      <span id='infowidth'>width</span>
-      <span id='fontname'>font</span>
+        <span id='infowidth'>width</span>
+        <span id='fontname'>font</span>
     </p>
-  </div>
+</div>
 
-  </body>
+</body>
 </html>

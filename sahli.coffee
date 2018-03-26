@@ -14,9 +14,9 @@ l__________/__________|___|______l__________j_____j
 
 class @Sahli
   constructor: () ->
-    $('body').css('cursor', 'none');
-    # I don't think we actually are going to have one, as we don't
-    # need instance variables (things used outside the function)
+  $('body').css('cursor', 'none');
+  # I don't think we actually are going to have one, as we don't
+  # need instance variables (things used outside the function)
 
   @loadpic = (picdata, inserthere) ->
     switch picdata.filetype
@@ -50,7 +50,7 @@ class @Sahli
     req = new XMLHttpRequest
     fname = @location + '/' + picdata.file
     buf = $('<span>')
-    buf.css {'margin':'0 auto'}
+    buf.css {'margin': '0 auto'}
     ptxt = $('<pre>')
     ptxt.addClass 'plaintext'
     color = @calccolor(picdata.color)
@@ -62,14 +62,11 @@ class @Sahli
       'background-color': bgcolor
       'margin': 'auto'
       'display': 'inline-block'
-    #ptxt.width picdata.width * 8
-    #@origwidth = ptxt.width
-    #pdiv.width ptxt.width
     pdiv.prepend buf.clone()
     pdiv.append ptxt
     pdiv.append buf
-# this is still needed for some Amiga stuff done on Amiga.
-# probably should allow other overrides for UTF-8 and so on.
+    # this is still needed for some Amiga stuff done on Amiga.
+    # probably should allow other overrides for UTF-8 and so on.
     req.overrideMimeType 'text/plain; charset=ISO-8859-1'
     req.onreadystatechange = ->
       if req.readyState == req.DONE
@@ -82,7 +79,7 @@ class @Sahli
     req.open 'GET', fname, true
     req.send null
 
-  @increaseFont = (node, increaseBy=5) ->
+  @increaseFont = (node, increaseBy = 5) ->
     current_size = parseInt($(node).css("font-size"));
     $(node).css("font-size", current_size + increaseBy);
 
@@ -130,23 +127,29 @@ class @Sahli
     else
       @zoom(-100);
 
+  @imagefullwidth = ->
+    $('div.scrolly').removeClass 'bestfitMode'
+    $('div.scrolly').addClass 'fullwidthMode'
+    $('div.scrolly').width window.innerWidth
+    $('div.scrolly').height("")
+    $('img.bestfit').addClass 'fullwidth'
+    $('img.bestfit').removeClass 'bestfit'
+
+  @imagebestfit = ->
+    $('h6').hide()
+    $('div.scrolly').addClass 'bestfitMode'
+    $('div.scrolly').removeClass 'fullwidthMode'
+    $('div.scrolly').width window.innerWidth
+    $('div.scrolly').height window.innerHeight
+    $('img.fullwidth').addClass 'bestfit'
+    $('img.fullwidth').removeClass 'fullwidth'
+
   @bestfit = =>
     if $('div.scrolly').hasClass('image')
       if $('div.scrolly').hasClass('bestfitMode')
-        $('div.scrolly').removeClass 'bestfitMode'
-        $('div.scrolly').addClass 'fullwidthMode'
-        $('div.scrolly').width window.innerWidth
-        $('div.scrolly').height("")
-        $('img.bestfit').addClass 'fullwidth'
-        $('img.bestfit').removeClass 'bestfit'
+        @imagefullwidth()
       else
-        $('h6').hide()
-        $('div.scrolly').addClass 'bestfitMode'
-        $('div.scrolly').removeClass 'fullwidthMode'
-        $('div.scrolly').width window.innerWidth
-        $('div.scrolly').height window.innerHeight
-        $('img.fullwidth').addClass 'bestfit'
-        $('img.fullwidth').removeClass 'fullwidth'
+        @imagebestfit()
 
   @loadhugeansi = (picdata, inserthere) ->
     fname = @location + '/' + picdata.file
@@ -176,10 +179,10 @@ class @Sahli
     @loadkeys()
     @DEBUG = false
     @fullscreen = false
-    @scroll_speed= 5
-    @scroll_direction= 1
-    @asciiasgfx= false
-    @currentpic= 0
+    @scroll_speed = 5
+    @scroll_direction = 1
+    @asciiasgfx = false
+    @currentpic = 0
     $.getJSON url, (json) =>
       @filedata = json.filedata
       @slides = json.slides
@@ -188,8 +191,8 @@ class @Sahli
 
   @loadinfopanel = (index) ->
     data = @filedata[index]
-    $('.infobox h1').text  data.name
-    $('.infobox h2').text  data.author
+    $('.infobox h1').text data.name
+    $('.infobox h2').text data.author
     $('h3.infobox')[0].textContent = data.line1
     $('h3.infobox')[1].textContent = data.line2
     $('p.bigtext').text data.text
@@ -218,7 +221,7 @@ class @Sahli
     @loadinfopanel i
 
   @prevpic = =>
-    i = @currentpic-2
+    i = @currentpic - 2
     if i < 0
       i = i + @filedata.length
     @currentpic = i
@@ -274,30 +277,30 @@ class @Sahli
       scrollto = 0
       steps = scrollbox.scrollTop()
     console.log "#{@scroll_speed} | #{steps}"
-    scrollbox.animate { scrollTop: scrollto }, @scroll_speed * steps, 'linear'
+    scrollbox.animate {scrollTop: scrollto}, @scroll_speed * steps, 'linear'
 
   @changespeed = (speed) ->
     @scroll_speed = speed
     $('body').stop()
-    @scroll_direction = - @scroll_direction
+    @scroll_direction = -@scroll_direction
     @setscroll()
 
-# chromium wasn't working with up/down/pageup/pagedown, firefox was. This makes
-# both work the same way.
+  # chromium wasn't working with up/down/pageup/pagedown, firefox was. This makes
+  # both work the same way.
 
   @moveline = (direction) ->
     curpos = $('body').scrollTop()
-    $('body').scrollTop(curpos + (16*direction))
+    $('body').scrollTop(curpos + (16 * direction))
 
   @changescrolldirection = (direction) ->
     @scroll_direction = direction
     $('body').stop()
     @setscroll()
 
-#    - save width upon draw
-#    - toggle zoom out to full width / normal
-#    - with a number, change width by that much
-# if scrolling, where are we in the doc? zoom to THAT area. - not implemented
+  #    - save width upon draw
+  #    - toggle zoom out to full width / normal
+  #    - with a number, change width by that much
+  # if scrolling, where are we in the doc? zoom to THAT area. - not implemented
   @zoom = (amt) ->
     zoomee = $('div.scrolly')
     if amt?
@@ -308,15 +311,15 @@ class @Sahli
       zoomee.width newwidth
       $('canvas').width newwidth
     else
-      if parseInt( zoomee.width(), 10 ) != parseInt( @origwidth, 10)
+      if parseInt(zoomee.width(), 10) != parseInt(@origwidth, 10)
         zoomee.width @origwidth
         $('canvas').width '100%'
       else
         zoomee.width '100%'
         $('canvas').width '100%'
 
-# create a panel of 'strips' so as to show a very long vertical piece on one
-# big 'plate'
+  # create a panel of 'strips' so as to show a very long vertical piece on one
+  # big 'plate'
 
   @panelmode = ->
     $('#panel').toggle()
@@ -327,21 +330,16 @@ class @Sahli
       ww = window.innerWidth
       wh = window.innerHeight
       numpanels = canvs.length
-      screenratio = ww/wh
+      screenratio = ww / wh
 
-      panelratio = canvs[0].height/canvs[0].width
-
-      x = Math.sqrt numpanels/screenratio
-      numcols = Math.round(screenratio*x)
-      picdpercol = Math.round(numpanels/numcols)
-
-      newwidth = ww/numcols
+      x = Math.sqrt numpanels / screenratio
+      numcols = Math.round(screenratio * x)
+      newwidth = ww / numcols
 
       canvs.width newwidth
 
       newheight = canvs.height()
-      panelsperslot = Math.floor wh/newheight
-      panelslotheight = panelsperslot * newheight
+      panelsperslot = Math.floor wh / newheight
 
       outer = $('<div>')
       console.log numcols
@@ -352,7 +350,7 @@ class @Sahli
       level = 0
       drawcol = 1
       ct = 0
-      outer.append @createpanel(1,newwidth - 6)
+      outer.append @createpanel(1, newwidth - 6)
       for pic in canvs
         $("#column#{drawcol}").append pic
         level += 1
@@ -361,34 +359,33 @@ class @Sahli
           level = 0
           drawcol = drawcol + 1
           if ct < numpanels
-            outer.append @createpanel(drawcol,newwidth - 6)
+            outer.append @createpanel(drawcol, newwidth - 6)
     else
       $('#outbox').show()
       $('.scrolly').append pic for pic in canvs
       canvs.width @origwidth
       $('body').scrollTop 0
 
-  @createpanel = (i,amt) ->
+  @createpanel = (i, amt) ->
     dcol = $("<div id='column#{i}' class='panelcolumn'>#{i}</div>")
     dcol.width amt
 
   @loadkeys = ->
-
     $(document).on('click', (ev) =>
       clickx = ev.clientX
       clicky = ev.clientY
       wh = window.innerHeight
       ww = window.innerWidth
-      if clicky > wh-100
+      if clicky > wh - 100
         @nextpic()
       if clicky < 100
         @setscroll()
-      if (clicky > 100 && clicky < wh-100 )
+      if (clicky > 100 && clicky < wh - 100)
         if clickx < 100
           @togglefullscreen()
-        if clickx > ww-100
+        if clickx > ww - 100
           @panelmode()
-      )
+    )
     $(document).on('keydown', (ev) =>
       switch ev.which
         when @keycode ' '
@@ -406,7 +403,7 @@ class @Sahli
           $('body').scrollTop $('body').height()
         when @keycode 'a'
           $('body').stop()
-          @scroll_direction = - @scroll_direction
+          @scroll_direction = -@scroll_direction
         when @keycode 'z'
           @togglefullwidthmode()
         when @keycode 'e'
@@ -423,7 +420,7 @@ class @Sahli
           $('div.infobox').toggle()
         when @keycode 'v'
           $('h6').show()
-          $('h6').height( (window.innerHeight - $('.scrolly').height()) / 2 )
+          $('h6').height((window.innerHeight - $('.scrolly').height()) / 2)
         when @keycode '1'
           @changespeed 1
         when @keycode '2'
@@ -450,8 +447,8 @@ class @Sahli
         when 33 # pageup
           @moveline -40
         when @keycode 'h'
-          $('.help').css {'left':'33%'}
+          $('.help').css {'left': '25%'}
           $('.help').toggle 'fast'
         else
           console.log ev.which
-      )
+    )
