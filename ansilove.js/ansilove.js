@@ -74,6 +74,20 @@ var AnsiLove = (function () {
             return string.replace(/\s+$/, '');
         };
 
+        // Returns a string of <num> characters at the current file position which is terminated by a null character.
+        this.getSZ = function (num) {
+            var string, value;
+            string = "";
+            while (num-- > 0) {
+                value = this.get();
+                if (value === 0) {
+                    break;
+                }
+                string += String.fromCharCode(value);
+            }
+            return string;
+        };
+
         // Returns "true" if, at the current <pos>, a string of characters matches <match>. Does not increment <pos>.
         this.lookahead = function (match) {
             var i;
@@ -144,6 +158,10 @@ var AnsiLove = (function () {
             this.sauce.comments = [];
             commentCount = this.get(); // unsigned 8-bit
             this.sauce.flags = this.get(); // unsigned 8-bit
+            this.sauce.blinkMode = (this.sauce.flags & 1) === 1;
+            this.sauce.letterSpacing = (this.sauce.flags >> 1) & 3;
+            this.sauce.aspectRatio = (this.sauce.flags >> 3) & 3;
+            this.sauce.tInfoS = this.getSZ(22); // Null-terminated string, maximum of 22 characters
             if (commentCount > 0) {
                 // If we have a value for the comments amount, seek to the position we'd expect to find them...
                 pos = bytes.length - 128 - (commentCount * 64) - 5;
@@ -424,7 +442,7 @@ var AnsiLove = (function () {
                                 fontBuffer[bufferIndex].set(palette[fg], k);
                             } else {
                                 // In case that this is an <amigaFont>, and the foreground colour <fg> is set to bold type, i.e. 8 to 15, make sure we 'double-width' the glyph.
-                                if (amigaFont && (fg > 7) && (i > 0) && bits[j - 1]) {
+                                if (amigaFont && (fg > 7) && (i % width > 0) && bits[j - 1] && (options.bits === "ced" || options.bits === "workbench")) {
                                     fontBuffer[bufferIndex].set(palette[fg], k);
                                 } else {
                                     fontBuffer[bufferIndex].set(palette[bg], k);
@@ -951,14 +969,57 @@ var AnsiLove = (function () {
 
             // If there is a sauce record...
             if (file.sauce) {
-                // Do a weak sanity check to see if there is a valid column setting, and use it if it passes.
-                if (file.sauce.tInfo1 > 0 && file.sauce.tInfo1 <= 1000) {
+                if (file.sauce.tInfo1 > 0) {
                     columns = file.sauce.tInfo1;
                 } else {
                     columns = 80;
                 }
                 // If no-blink mode is set in the sauce flags, use it. Otherwise, default to <options.icecolors> setting.
                 icecolors = file.sauce.flags & 1 || options.icecolors;
+                // Override the letterspacing setting if defined in sauce
+                switch (file.sauce.letterSpacing) {
+                case 1:
+                    options.bits = "8";
+                    break;
+                case 2:
+                    options.bits = "9";
+                    break;
+                default:
+                    break;
+                }
+                // Override the font setting if defined in sauce
+                switch (file.sauce.tInfoS) {
+                case "IBM VGA":
+                    options.font = "80x25";
+                    break;
+                case "IBM VGA50":
+                    options.font = "80x50";
+                    break;
+                case "Amiga Topaz 1":
+                    options.font = "topaz500";
+                    break;
+                case "Amiga Topaz 1+":
+                    options.font = "topaz500+";
+                    break;
+                case "Amiga Topaz 2":
+                    options.font = "topaz";
+                    break;
+                case "Amiga Topaz 2+":
+                    options.font = "topaz+";
+                    break;
+                case "Amiga P0T-NOoDLE":
+                    options.font = "pot-noodle";
+                    break;
+                case "Amiga MicroKnight":
+                    options.font = "microknight";
+                    break;
+                case "Amiga MicroKnight+":
+                    options.font = "microknight+";
+                    break;
+                case "Amiga mOsOul":
+                    options.font = "mosoul";
+                    break;
+                }
             } else {
                 // If "ced" mode has been invoked, set the <columns> to 78 character wide. Otherwise, use the default 80.
                 if (options.mode === "ced") {
@@ -1231,6 +1292,61 @@ var AnsiLove = (function () {
             // If there is sauce record, look for an <icecolors> setting in flags, use the user-defined or default setting if not.
             if (file.sauce) {
                 icecolors = file.sauce.flags & 1 || options.icecolors;
+                // Override the letterspacing setting if defined in sauce
+                switch (file.sauce.letterSpacing) {
+                case 1:
+                    options.bits = "8";
+                    break;
+                case 2:
+                    options.bits = "9";
+                    break;
+                default:
+                    break;
+                }
+                // Override the letterspacing setting if defined in sauce
+                switch (file.sauce.letterSpacing) {
+                case 1:
+                    options.bits = "8";
+                    break;
+                case 2:
+                    options.bits = "9";
+                    break;
+                default:
+                    break;
+                }
+                // Override the font setting if defined in sauce
+                switch (file.sauce.tInfoS) {
+                case "IBM VGA":
+                    options.font = "80x25";
+                    break;
+                case "IBM VGA50":
+                    options.font = "80x50";
+                    break;
+                case "Amiga Topaz 1":
+                    options.font = "topaz500";
+                    break;
+                case "Amiga Topaz 1+":
+                    options.font = "topaz500+";
+                    break;
+                case "Amiga Topaz 2":
+                    options.font = "topaz";
+                    break;
+                case "Amiga Topaz 2+":
+                    options.font = "topaz+";
+                    break;
+                case "Amiga P0T-NOoDLE":
+                    options.font = "pot-noodle";
+                    break;
+                case "Amiga MicroKnight":
+                    options.font = "microknight";
+                    break;
+                case "Amiga MicroKnight+":
+                    options.font = "microknight+";
+                    break;
+                case "Amiga mOsOul":
+                    options.font = "mosoul";
+                    break;
+                }
             } else {
                 icecolors = options.icecolors;
             }
@@ -1593,12 +1709,9 @@ var AnsiLove = (function () {
             // Choose which parser to use, based on the setting defined in <options.filetype>.
             switch (options.filetype) {
             case "txt":
-            case "nfo":
-            case "asc":
                 // For plain-text files, use the ascii parser, and use the default, or user-defined font.
                 data = asc(bytes, options);
                 break;
-            case "diz":
             case "ion":
                 // For diz files, use the ascii parser, and use the default, or user-defined font. Also, trim the extra columns.
                 data = asc(bytes, options);
@@ -1627,6 +1740,10 @@ var AnsiLove = (function () {
             case "xb":
                 // For XBin files, use the xb parser. Font is already set in the parser.
                 data = xb(bytes, options);
+                break;
+            case "diz":
+                data = ans(bytes, options);
+                data.imageData.trimColumns();
                 break;
             default:
                 // For unrecognised filetypes, use the ANSI parser.
