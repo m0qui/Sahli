@@ -197,7 +197,7 @@ It is also possible to retrieve a record for a file without generating an image 
 
 ## License
 
-AnsiLove.js is released under a MIT-style license. See `LICENSE` file for details.
+AnsiLove.js is released under the BSD 3-Clause license. See `LICENSE` file for details.
 
 ## Author
 
@@ -206,7 +206,7 @@ AnsiLove.js is developed by [Andrew Herbert](http://andyh.org)
 
 ## Resources
 
-Project Homepage : [https://github.com/andyherbert/ansilove.js](https://github.com/andyherbert/ansilove.js)
+Project Homepage : [https://ansilove.github.com/ansilove.js](https://ansilove.github.com/ansilove.js)
 
 [1]: https://github.com/fcambus/ansilove
 [2]: https://github.com/ByteProject/AnsiLove-C
